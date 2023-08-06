@@ -14,7 +14,7 @@ import ReactECharts from 'echarts-for-react';
 
 /**
 
- * 添加图表页面
+ * 我的图表页面
 
  * @constructor
 

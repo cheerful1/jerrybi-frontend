@@ -4,6 +4,8 @@
   // 主页重定向到add页面
   { path: '/', redirect: '/add_chart' },
   { path: '/add_chart', name: '智能分析', icon: 'barChart', component: './AddChart' },
+  //新建一个路由
+  { path: '/my_chart', name: '我的图表', icon: 'pieChart', component: './MyChart' },
   {
     path: '/admin',
     icon: 'crown',
