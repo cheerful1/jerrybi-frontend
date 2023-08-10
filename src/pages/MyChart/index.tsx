@@ -1,16 +1,8 @@
-import {listMyChartByPageUsingPOST} from '@/services/yubi/chartController';
-
-
-
-import { Card, message} from 'antd';
+import { listMyChartByPageUsingPOST } from '@/services/yubi/chartController';
 import { useModel } from '@@/exports';
-
-
-import React, {useEffect, useState} from 'react';
-
+import {Avatar, Card, List, message, Result} from 'antd';
 import ReactECharts from 'echarts-for-react';
-import List from 'antd/lib/list';
-import Avatar from 'antd/es/avatar/avatar';
+import React, { useEffect, useState } from 'react';
 import Search from "antd/es/input/Search";
 
 
@@ -28,6 +20,8 @@ const MyChart: React.FC = () => {
   const initSearchParams = {
     current: 1,
     pageSize: 4,
+    sortField: 'createTime',
+    sortOrder: 'desc',
   }
   //获取后端数据
 
@@ -67,11 +61,21 @@ const MyChart: React.FC = () => {
 
           res.data.records.forEach(data => {
 
-            const chartOption = JSON.parse(data.genChart ?? '{}');
+            // const chartOption = JSON.parse(data.genChart ?? '{}');
+            //
+            // chartOption.title = undefined;
+            //
+            // data.genChart = JSON.stringify(chartOption);
 
-            chartOption.title = undefined;
+            if (data.status === 'succeed') {
 
-            data.genChart = JSON.stringify(chartOption);
+              const chartOption = JSON.parse(data.genChart ?? '{}');
+
+              chartOption.title = undefined;
+
+              data.genChart = JSON.stringify(chartOption);
+
+            }
 
           })
 
@@ -191,14 +195,79 @@ const MyChart: React.FC = () => {
 
               />
 
-              <div style={{ marginBottom: 16 }} />
+              <>
 
-              <p>{'分析目标：' + item.goal}</p>
+                {
 
-              <div style={{ marginBottom: 16 }} />
+                  item.status === 'wait' && <>
 
-              <ReactECharts option={item.genChart && JSON.parse(item.genChart)} />
+                    <Result
 
+                      status="warning"
+
+                      title="待生成"
+
+                      subTitle={item.execMessage ?? '当前图表生成队列繁忙，请耐心等候'}
+
+                    />
+
+                  </>
+
+                }
+
+                {
+
+                  item.status === 'running' && <>
+
+                    <Result
+
+                      status="info"
+
+                      title="图表生成中"
+
+                      subTitle={item.execMessage}
+
+                    />
+
+                  </>
+
+                }
+
+                {
+
+                  item.status === 'succeed' && <>
+
+                    <div style={{ marginBottom: 16 }} />
+
+                    <p>{'分析目标：' + item.goal}</p>
+
+                    <div style={{ marginBottom: 16 }} />
+
+                    <ReactECharts option={item.genChart && JSON.parse(item.genChart)} />
+
+                  </>
+
+                }
+
+                {
+
+                  item.status === 'failed' && <>
+
+                    <Result
+
+                      status="error"
+
+                      title="图表生成失败"
+
+                      subTitle={item.execMessage}
+
+                    />
+
+                  </>
+
+                }
+
+              </>
             </Card>
 
           </List.Item>
