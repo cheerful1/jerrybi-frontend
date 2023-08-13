@@ -104,6 +104,7 @@ declare namespace API {
     chartId?: number;
     genChart?: string;
     genResult?: string;
+    status?: string;
   };
 
   type Chart = {
@@ -164,6 +165,12 @@ declare namespace API {
 
   type DeleteRequest = {
     id?: number;
+  };
+
+  type genChartByAiAsyncMqUsingPOSTParams = {
+    chartType?: string;
+    goal?: string;
+    name?: string;
   };
 
   type genChartByAiAsyncUsingPOSTParams = {

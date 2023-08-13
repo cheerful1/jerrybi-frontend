@@ -1,4 +1,8 @@
-import {genChartByAiAsyncUsingPOST, genChartByAiUsingPOST} from '@/services/yubi/chartController';
+import {
+  genChartByAiAsyncMqUsingPOST,
+  genChartByAiAsyncUsingPOST,
+  genChartByAiUsingPOST
+} from '@/services/yubi/chartController';
 
 import { UploadOutlined } from '@ant-design/icons';
 
@@ -60,7 +64,8 @@ const AddChartAsync: React.FC = () => {
 
     try {
 
-      const res = await genChartByAiAsyncUsingPOST(params, {}, values.file.file.originFileObj);
+      // const res = await genChartByAiAsyncUsingPOST(params, {}, values.file.file.originFileObj);
+      const res = await genChartByAiAsyncMqUsingPOST(params, {}, values.file.file.originFileObj);
 
       if (!res?.data) {
 
